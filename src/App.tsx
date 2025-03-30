@@ -1,35 +1,79 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes, useNavigate } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import { useState } from "react";
+import { Container } from "@mui/material";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
+import EmployeeList from "./components/EmployeeList";
+import EmployeeForm from "./components/EmployeeForm";
+import ProtectedRoute from "./components/ProtectedRoute";
+import {
+  getLoggedInCustomer,
+  readCustomersFromLocalStorage,
+  writeCustomersToLocalStorage,
+} from "./utils";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const navigate = useNavigate();
+
+  const customers = readCustomersFromLocalStorage();
+
+  const loggedInCustomer = getLoggedInCustomer(customers);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    loggedInCustomer ? loggedInCustomer.isLoggedIn : false
+  );
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    navigate("/addEmployee");
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    if (loggedInCustomer) {
+      const updatedCustomers = customers.map((customer) => {
+        if (customer.email === loggedInCustomer.email) {
+          return { ...customer, isLoggedIn: false };
+        }
+        return customer;
+      });
+
+      writeCustomersToLocalStorage(updatedCustomers);
+    }
+    navigate("/login");
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Sidebar onLogout={handleLogout} isLoggedIn={isLoggedIn}>
+        <Container maxWidth="sm">
+          <Routes>
+            <Route path="/" element={<SignUp onLogin={handleLogin} />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route
+              path="/employees"
+              element={
+                <ProtectedRoute
+                  isLoggedIn={isLoggedIn}
+                  element={<EmployeeList />}
+                />
+              }
+            />
+            <Route
+              path="/addEmployee"
+              element={
+                <ProtectedRoute
+                  isLoggedIn={isLoggedIn}
+                  element={<EmployeeForm />}
+                />
+              }
+            />
+          </Routes>
+        </Container>
+      </Sidebar>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

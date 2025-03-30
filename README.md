@@ -1,54 +1,49 @@
-# React + TypeScript + Vite
+# Customer and Employee Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple React application built with TypeScript, Material UI, React Hook Form, and Zod. It allows users to create customer accounts, log in, manage employees associated with those accounts. Local storage is used as the "database" for storing customer and employee data.
 
-Currently, two official plugins are available:
+## Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **React:** A JavaScript library for building user interfaces.
+* **TypeScript:** A statically typed superset of JavaScript.
+* **Material UI (@mui/material):** A React UI framework that implements Google's Material Design.
+* **React Hook Form:** For form management.
+* **Zod:** For schema declaration and validation.
+* **React Router DOM:** For client-side routing.
+* **Local Storage:** For client-side data storage.
+* **Vite:** For development environment.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* **Sign-Up (Customer Creation):** Users can create customer accounts.
+* **Login:** Users can log in with their credentials.
+* **Employee Creation:** Users can create employees associated with their customer accounts.
+* **View Employees:** Users can view a list of employees associated with their account.
+* **Employee Management:** Employee data is stored in local storage under the customer's profile.
+* **Route Protection:** Routes are protected so that only logged in users can access employee related pages.
+* **Form Validation:** Form validation is implemented using Zod and React Hook Form.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Setup and Run Locally
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1.  **Clone the Repository:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+    ```bash
+    git clone <repository_url>
+    cd <repository_name>
+    ```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+2.  **Install Dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Run the Application:**
+
+    ```bash
+    npm run dev
+    ```
+
+4.  **Open in Browser:**
+
+    * Open your browser and navigate to `http://localhost:5173/` (or the port specified by Vite).
